@@ -1,10 +1,10 @@
-export interface Album {
+export interface AlbumInterface {
     album_group: string;
     album_type: string;
     artist_id: string;
     artists?: (ArtistsEntity)[] | null;
     id: string;
-    images?: (ImagesEntity)[] | null;
+    images?: (ImagesEntity)[];
     name: string;
     release_date: string;
     release_date_ms: string;

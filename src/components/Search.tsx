@@ -1,5 +1,15 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useContext, useState } from 'react';
+import Loader from 'react-loader-spinner'
+import styled  from "styled-components"
+import { Context } from '../context';
+import { ActionTypes } from '../context/interfaces/Action.interface';
+import { follow, unfollow} from '../functions/artist'
+import { fetchCollection } from '../functions/fetchCollection';
+import { useSearchArtists, SearchArtistInterface } from '../hooks/useSearchArtists';
+import { ArtistInterface } from '../interfaces/Artist.interface';
+interface ButtonProps {
+  followed?: boolean
+}
 
 const Container = styled.div`
     width:100%;
@@ -26,9 +36,15 @@ const Container = styled.div`
         width: 100%;
         display:flex;
         flex-direction: column;
+        justify-content:center;
         border: 2px solid #72D861;
         border-bottom-left-radius:20px;
         border-bottom-right-radius:20px;
+
+        .loader{
+            justify-self: auto;
+            align-self: center;
+        }
 
         .artist{
             display:flex;
@@ -47,7 +63,7 @@ const Container = styled.div`
     }
 `
 
-const Button = styled.button`
+const Button = styled.button<ButtonProps>`
     background-color: #fff;
     border-radius:20px;
     text-align: center;
@@ -56,8 +72,8 @@ const Button = styled.button`
     padding:8px 0;
     font-weight: 500;
     font-size: 12px;
-    color: ${props => props?'#000':'#72D861'};
-    border: 2px solid ${props => props?'#000':'#72D861'};
+    color: ${props => props.followed?'#000':'#72D861'};
+    border: 2px solid ${props => props.followed?'#000':'#72D861'};
     transition: opacity .2s ease-in-out;
     cursor: pointer;
     font-family: 'Roboto Mono', monospace;
@@ -68,66 +84,55 @@ const Button = styled.button`
 `;
 
 const Search = () => {
+    const [input, setInput] = useState('')
+    const {artists, fetching} = useSearchArtists(input);
+    const {dispatch} = useContext(Context);
 
-    // const handleArtistClick = (artist) => {
-    //     checkFollowed(artist.id) ? unfollow(artist) : follow(artist);
-    //     setInput('');
-    // }
+    const handleArtistClick = (artist: ArtistInterface, followed: boolean) => {
+        followed ? unfollow(artist) : follow(artist);
+        fetchCollection('followed').then((artists: ArtistInterface[]) => dispatch({type: ActionTypes.SET_FOLLOWED,payload: artists}))
+        setInput('');
+    }
 
-    // useEffect(() => {
-    //     const delayDebounceFn = setTimeout(() => {
-    //       if(input !== '' && input.length < 2) return;
-    //       setFetching(true);
-    //       fetch('https://us-central1-random-scraper.cloudfunctions.net/searchArtist', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({
-    //             query: input
-    //         })
-    //       })
-    //       .then(res => res.json())
-    //       .then(res => {
-    //           console.log(res)
-    //           setResults(res)
-    //           setFetching(false)
-    //         })
-    //     }, 400)
     
-    //     return () => clearTimeout(delayDebounceFn)
-    //   }, [input])
-
-    // const handleSearch = (e) => {
-    //     setInput(e.target.value);
-    // }
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInput(e.target.value);
+    }
 
     return (
         <Container>
             <input 
-                // value={input} 
-                // onChange={handleSearch} 
+                value={input} 
+                onChange={handleSearch} 
             />
-            {/* {input && input.length > 2 &&  */}
-            <div className="results">
-                {/* {results.artists && results.artists.items.map( artist => { */}
-                {/* const followed = checkFollowed(artist.id) */}
-                {/* return ( */}
-                        <div className="artist">
-                            {/* {artist.images[2] && <img src={artist.images[2]?.url} alt={artist.name} />} */}
-                            <div>nazwa</div>
-                            <Button 
-                                // followed={followed}
-                                // onClick={() => handleArtistClick(artist)}
-                            >
-                                {/* {followed?"Usuń":"Obserwuj"} */}
-                                test
-                            </Button>
-                        </div>
-                    {/* )} */}
-                {/* )} */}
-            </div>
-            {/* } */}
+            {input && input.length > 2 &&  
+                <div className="results">
+                    {fetching ? 
+                        <Loader 
+                            className="loader"
+                            type="TailSpin"
+                            color="#72D861"
+                            height={100}
+                            width={100}
+                        />
+                    : 
+                        artists && artists.map(({artist, followed}: SearchArtistInterface) => { 
+                            return ( 
+                                    <div className="artist" key={artist.id}>
+                                        {artist.images && artist.images[2] && <img src={artist.images[2]?.url} alt={artist.name} />} 
+                                        <div>{artist.name}</div>
+                                        <Button 
+                                            followed={followed}
+                                            onClick={() => handleArtistClick(artist, followed)}
+                                        >
+                                            {followed?"Usuń":"Obserwuj"} 
+                                        </Button>
+                                    </div>
+                            )
+                        })
+                    }
+                </div>
+            } 
         </Container>
     )
 }

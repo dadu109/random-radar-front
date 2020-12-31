@@ -1,4 +1,4 @@
-export interface Artist {
+export interface ArtistInterface {
     external_urls: ExternalUrls;
     followers: Followers;
     genres?: (string)[] | null;

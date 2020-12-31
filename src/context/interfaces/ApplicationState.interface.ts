@@ -1,7 +1,7 @@
-import {Album} from '../../interfaces/Album.interface';
-import {Artist} from '../../interfaces/Artist.interface';
+import {AlbumInterface} from '../../interfaces/Album.interface';
+import {ArtistInterface} from '../../interfaces/Artist.interface';
 
 export interface ApplicationState {
-    albums: (Album)[];
-    followed: (Artist)[];
+    albums: (AlbumInterface)[];
+    followed: (ArtistInterface)[];
 }

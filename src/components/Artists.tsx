@@ -1,7 +1,13 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import styled from 'styled-components';
+import { Context } from '../context';
+import Artist from './Artist';
 
-const Container = styled.div`
+interface StyleProps {
+    isShown?: boolean;
+}
+
+const Container = styled.div<StyleProps>`
     max-width: 360px;
     width:100%;
     min-height:100vh;
@@ -9,7 +15,7 @@ const Container = styled.div`
     position: fixed;
     left:0;
     top:100px;
-    transform: ${(props) => props ? 'translateX(0)' : 'translateX(-100%)'};
+    transform: ${(props) => props.isShown ? 'translateX(0)' : 'translateX(-100%)'};
     background-color: #fff;
     padding: 0 20px;
     transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
@@ -57,33 +63,9 @@ const Container = styled.div`
             font-size: 22px;
         }
     }
-
-    .artist{
-        display:flex;
-        align-self: center;
-        margin-bottom: 14px;
-
-        img{
-            width:34px;
-            height:34px;
-            @media(min-width: 700px){
-                width:50px;
-                height:50px;
-            }
-        }
-        span{
-            padding-left:6px;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            @media(min-width: 700px){
-                padding-left:14px;
-            }
-        }
-    }
 `
 
-const Burger = styled.button`
+const Burger = styled.button<StyleProps>`
     background: transparent;
     border: none;
     z-index: 4;
@@ -107,49 +89,42 @@ const Burger = styled.button`
 
         &:first-child {
             transform-origin: 0% 0%;
-            ${(props) => props && 'transform: rotate(45deg) translate(1px, -1px)'};
+            ${(props) => props.isShown && 'transform: rotate(45deg) translate(1px, -1px)'};
         }
 
         &:nth-last-child(2) {
             opacity: ${(props) => props ? '0' : '1'};
-            ${(props) => props && ' transform: rotate(0deg) scale(0.2, 0.2)'};
+            ${(props) => props.isShown && ' transform: rotate(0deg) scale(0.2, 0.2)'};
         }
 
         &:last-child {
             transform-origin: 0% 100%;
-            ${(props) => props && ' transform: rotate(-45deg) translate(-2px, 4px)'};
+            ${(props) => props.isShown && ' transform: rotate(-45deg) translate(-2px, 4px)'};
         }
     }
 `;
 
 const Albums = () => {
-    // const [store] = useContext(Context);
+    const {state} = useContext(Context);  
     const [isShown, setShown] = useState(false);
 
     return (
         <>
-        <Burger onClick={() => setShown(!isShown)}>
-            <span/>
-            <span/>
-            <span/>
-        </Burger>
-        <Container >
-            <div className="count">
-                Obserwowani: 5
-                {/* {store.artists.length} */}
-            </div>
-            <div className="artists">
-                {/* {store.artists && store.artists.map( artist => ( */}
-                    <div className="artist">
-                        {/* {artist.images[0] && <img src={artist.images[0].url} alt={artist.name}/>} */}
-                        <span>Nazwa</span>
-                    </div>
-                {/* ))} */}
-            </div>
-            <div>
-                {/* {store.searched && store.searched.map( r => <div>{JSON.stringify(r)}</div>) } */}
-            </div>
-        </Container>
+            <Burger onClick={() => setShown(!isShown)}>
+                <span/>
+                <span/>
+                <span/>
+            </Burger>
+            <Container >
+                <div className="count">
+                    Obserwowani: {state.followed.length}
+                </div>
+                <div className="artists">
+                    {state.followed && state.followed.map(artist => (
+                        <Artist artist={artist}/>
+                    ))}
+                </div>
+            </Container>
         </>
     )
 }

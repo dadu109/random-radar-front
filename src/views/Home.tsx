@@ -1,6 +1,6 @@
 import React from 'react';
 import Albums from '../components/Albums';
-// import Header from '../components/Header'
+import Header from '../components/Header'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -17,7 +17,10 @@ const Container = styled.div`
 const Home = () => {
     return (
         <Container>
-            <Albums />
+            <Header/>
+            <div className="main-content">
+                <Albums />
+            </div>
         </Container>
     )
 }

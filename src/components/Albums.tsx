@@ -24,7 +24,7 @@ const Albums = () => {
             <div className="count">
                 Ostatnie 30 dni:
             </div>
-            {state.albums.map(album => (<Album album={album} key={album.url} />))}
+            {state.albums.sort((a,b) => +b.release_date_ms - +a.release_date_ms).map(album => (<Album album={album} key={album.id} />))}
         </Container>
     )
 }

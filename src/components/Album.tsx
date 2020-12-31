@@ -1,7 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import { Context } from '../context';
-import { Artist } from '../interfaces/Artist.interface';
+import { AlbumInterface } from '../interfaces/Album.interface';
+import { ArtistInterface } from '../interfaces/Artist.interface';
 
 const Container = styled.div`
     display: flex;
@@ -83,9 +84,13 @@ const Container = styled.div`
     }
 `
 
-const Album = ({album}: any) => {
+interface AlbumProps{
+    album: AlbumInterface;
+}
+
+const Album = ({album}: AlbumProps) => {
     const {name, artists, release_date, images, url, artist_id} = album;
-    const [artist, setArtist] = useState<Artist | undefined>(undefined);
+    const [artist, setArtist] = useState<ArtistInterface | undefined>(undefined);
     const {state} = useContext(Context);
 
     useEffect(() => {
@@ -104,11 +109,11 @@ const Album = ({album}: any) => {
         </div>
         <div className="content">
             <a href={url} target="_blank" rel="noreferrer">
-                <img src={images[1].url} alt={name} />
+                <img src={images && images[1].url} alt={name} />
                 <div className="info">
                     <h3>{name}</h3>
                     <p>{
-                        artists
+                        artists && artists
                             .map((artist: any) => artist.name)
                             .join(', ')
                     }</p>
