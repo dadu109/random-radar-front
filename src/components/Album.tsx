@@ -1,5 +1,7 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import styled from 'styled-components';
+import { Context } from '../context';
+import { Artist } from '../interfaces/Artist.interface';
 
 const Container = styled.div`
     display: flex;
@@ -82,20 +84,20 @@ const Container = styled.div`
 `
 
 const Album = ({album}: any) => {
-    const {name, artists, release_date, images, url} = album;
-    const [artist] = useState({});
-    // const [store] = useContext(Context);
+    const {name, artists, release_date, images, url, artist_id} = album;
+    const [artist, setArtist] = useState<Artist | undefined>(undefined);
+    const {state} = useContext(Context);
 
-    // useEffect(() => {
-    //     setArtist(store.artists.find(artist => artist.id === artist_id))
-    // },[store.artists, store.albums])
+    useEffect(() => {
+        const artistFound = state.followed.find(artist => artist.id === artist_id);
+        if(artistFound) setArtist(artistFound);
+    },[state.followed, artist_id])
 
     return <Container>
         <div className="meta">
             <div className="artist">
-                <a href={artist && `https://open.spotify.com/artist/${artist}`}>
-                    {/* {artist && artist.name}  */}
-                    name
+                <a href={artist && `https://open.spotify.com/artist/${artist.id}`} target="_blank" rel="noreferrer">
+                    {artist && artist.name} 
                 </a>
             </div>
             <div className="date">{release_date}</div>
