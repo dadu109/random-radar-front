@@ -36,6 +36,15 @@ const Container = styled.div`
                 font-size: 18px;
             }
         }
+        .type{
+            opacity: .6;
+            text-transform: capitalize;          
+            font-weight: normal;
+            font-size: 10px;
+            @media(min-width: 700px){
+                font-size: 18px;
+            }  
+        }
     }
     .content a{
         display:flex;
@@ -106,6 +115,7 @@ const Album = ({album}: AlbumProps) => {
                 </a>
             </div>
             <div className="date">{release_date}</div>
+            <div className="type">{album.album_type}</div>
         </div>
         <div className="content">
             <a href={url} target="_blank" rel="noreferrer">

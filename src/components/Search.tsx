@@ -15,7 +15,7 @@ const Container = styled.div`
     width:100%;
     max-width:660px;
     position: relative;
-    z-index:2;
+    z-index:20;
     input{
         outline: none;
         font-family: 'Roboto Mono', monospace;
@@ -104,6 +104,7 @@ const Search = () => {
             <input 
                 value={input} 
                 onChange={handleSearch} 
+                placeholder="Znajdź artystę"
             />
             {input && input.length > 2 &&  
                 <div className="results">

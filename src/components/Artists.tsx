@@ -2,16 +2,16 @@ import React, {useContext, useState} from 'react';
 import styled from 'styled-components';
 import { Context } from '../context';
 import Artist from './Artist';
+import ScrollContainer from './ScrollContainer'
 
 interface StyleProps {
     isShown?: boolean;
 }
 
-const Container = styled.div<StyleProps>`
-    max-width: 360px;
+const Container = styled(ScrollContainer)<StyleProps>`
     width:100%;
-    min-height:100vh;
-    max-height:100vh;
+    height:85vh;
+    max-height:85vh;
     position: fixed;
     left:0;
     top:100px;
@@ -19,40 +19,16 @@ const Container = styled.div<StyleProps>`
     background-color: #fff;
     padding: 0 20px;
     transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
-    overflow-y: scroll;
-    &::-webkit-scrollbar {
-    width: 1px;
-    height: 1px;
-    }
-    &::-webkit-scrollbar-button {
-    width: 0px;
-    height: 0px;
-    }
-    &::-webkit-scrollbar-thumb {
-    background: #72d861;
-    border: 0px none #ffffff;
-    border-radius: 50px;
-    }
-    &::-webkit-scrollbar-thumb:hover {
-    background: #ffffff;
-    }
-    &::-webkit-scrollbar-thumb:active {
-    background: #000000;
-    }
-    &::-webkit-scrollbar-track {
-    background: #e1e1e1;
-    border: 0px none #ffffff;
-    border-radius: 50px;
-    }
-    &::-webkit-scrollbar-corner {
-    background: transparent;
-    }
+    z-index:10;
 
     @media(min-width: 700px){
         position: absolute;
         top:100%;
+        max-width: 360px;
         transform: translateX(0);
         padding:0;
+        height:75vh;
+        max-height:75vh;
     }
 
     .count{
@@ -93,7 +69,7 @@ const Burger = styled.button<StyleProps>`
         }
 
         &:nth-last-child(2) {
-            opacity: ${(props) => props ? '0' : '1'};
+            opacity: ${(props) => props.isShown ? '0' : '1'};
             ${(props) => props.isShown && ' transform: rotate(0deg) scale(0.2, 0.2)'};
         }
 
@@ -104,24 +80,24 @@ const Burger = styled.button<StyleProps>`
     }
 `;
 
-const Albums = () => {
+const Artists = () => {
     const {state} = useContext(Context);  
     const [isShown, setShown] = useState(false);
 
     return (
         <>
-            <Burger onClick={() => setShown(!isShown)}>
+            <Burger isShown={isShown} onClick={() => setShown(!isShown)}>
                 <span/>
                 <span/>
                 <span/>
             </Burger>
-            <Container >
+            <Container isShown={isShown}>
                 <div className="count">
                     Obserwowani: {state.followed.length}
                 </div>
                 <div className="artists">
-                    {state.followed && state.followed.map(artist => (
-                        <Artist artist={artist}/>
+                    {state.followed && state.followed.sort((a,b) => (a > b ? -1 : 1)).map(artist => (
+                        <Artist artist={artist} key={artist.id}/>
                     ))}
                 </div>
             </Container>
@@ -129,4 +105,4 @@ const Albums = () => {
     )
 }
 
-export default Albums;
+export default Artists;

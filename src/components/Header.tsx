@@ -11,7 +11,7 @@ const Container = styled.div`
     position:relative;
 
     @media(min-width: 700px){
-        padding: 90px 0 70px;
+        padding: 70px 0;
     }
 
     .logo{
