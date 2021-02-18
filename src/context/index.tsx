@@ -5,7 +5,9 @@ import Reducer from './reducer'
 
 const initialState: ApplicationState = {
     albums: [],
-    followed: []
+    followed: [],
+    user: null,
+    credential: null
 };
 
 export const Context = createContext<{

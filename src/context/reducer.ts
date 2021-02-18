@@ -1,5 +1,5 @@
-import {ApplicationState} from './interfaces/ApplicationState.interface'
-import {Action, ActionTypes} from './interfaces/Action.interface'
+import { ApplicationState } from './interfaces/ApplicationState.interface'
+import { Action, ActionTypes } from './interfaces/Action.interface'
 
 const Reducer = (state: ApplicationState, action: Action) => {
     switch (action.type) {
@@ -13,6 +13,11 @@ const Reducer = (state: ApplicationState, action: Action) => {
                 ...state,
                 followed: action.payload
             };
+        case ActionTypes.SET_USER:
+            return {
+                ...state,
+                user: action.payload
+            }
         default:
             return state;
     }

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Search from './Search';
 import Artists from './Artists';
+import Login from './Login'
 
 const Container = styled.div`
     padding: 30px 14px;
@@ -40,27 +41,6 @@ const Container = styled.div`
             }
         }
     }
-    .login{
-        background-color: #72D861;
-        border-radius: 20px;
-        border: none;
-        text-align: center;
-        padding:7px 14px;
-        font-size: 18px;
-        min-width:100px;
-        font-weight: 500;
-        color:#fff;
-        transition: opacity .2s ease-in-out;
-        cursor: pointer;
-        font-family: 'Roboto Mono', monospace;
-
-        &:hover{
-            opacity: .5;
-        }
-        @media(max-width: 700px){
-            display:none;
-        }
-    }
 `
 
 const Header = () => {
@@ -71,8 +51,8 @@ const Header = () => {
                 <span className="green">RADAR</span>
             </div>
             <Search />
-            <button className="login">Login</button>
-            <Artists/>
+            <Login />
+            <Artists />
         </Container>
     )
 }
