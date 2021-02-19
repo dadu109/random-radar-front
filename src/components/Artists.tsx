@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Context } from '../context';
 import Artist from './Artist';
@@ -8,7 +8,7 @@ interface StyleProps {
     isShown?: boolean;
 }
 
-const Container = styled(ScrollContainer)<StyleProps>`
+const Container = styled(ScrollContainer) <StyleProps>`
     width:100%;
     height:85vh;
     max-height:85vh;
@@ -81,23 +81,23 @@ const Burger = styled.button<StyleProps>`
 `;
 
 const Artists = () => {
-    const {state} = useContext(Context);  
+    const { state } = useContext(Context);
     const [isShown, setShown] = useState(false);
 
     return (
         <>
             <Burger isShown={isShown} onClick={() => setShown(!isShown)}>
-                <span/>
-                <span/>
-                <span/>
+                <span />
+                <span />
+                <span />
             </Burger>
             <Container isShown={isShown}>
                 <div className="count">
                     Obserwowani: {state.followed.length}
                 </div>
                 <div className="artists">
-                    {state.followed && state.followed.sort((a,b) => (a > b ? -1 : 1)).map(artist => (
-                        <Artist artist={artist} key={artist.id}/>
+                    {state.followed && state.followed.sort((a, b) => (a.name < b.name ? -1 : 1)).map(artist => (
+                        <Artist artist={artist} key={artist.id} />
                     ))}
                 </div>
             </Container>

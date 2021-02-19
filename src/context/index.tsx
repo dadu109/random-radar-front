@@ -1,13 +1,14 @@
-import React, {createContext, useReducer} from "react";
-import {ApplicationState} from './interfaces/ApplicationState.interface'
-import {Action} from './interfaces/Action.interface'
+import React, { createContext, useReducer } from "react";
+import { ApplicationState } from './interfaces/ApplicationState.interface'
+import { Action } from './interfaces/Action.interface'
 import Reducer from './reducer'
 
 const initialState: ApplicationState = {
     albums: [],
     followed: [],
     user: null,
-    credential: null
+    credential: null,
+    allowedToWrite: false
 };
 
 export const Context = createContext<{
@@ -18,10 +19,10 @@ export const Context = createContext<{
     dispatch: () => null
 });
 
-const Store = ({children}: any) => {
+const Store = ({ children }: any) => {
     const [state, dispatch] = useReducer(Reducer, initialState);
     return (
-        <Context.Provider value={{state, dispatch}}>
+        <Context.Provider value={{ state, dispatch }}>
             {children}
         </Context.Provider>
     )

@@ -16,7 +16,9 @@ const Reducer = (state: ApplicationState, action: Action) => {
         case ActionTypes.SET_USER:
             return {
                 ...state,
-                user: action.payload
+                user: action.payload.user,
+                credential: action.payload.credential,
+                allowedToWrite: action.payload.allowedToWrite
             }
         default:
             return state;

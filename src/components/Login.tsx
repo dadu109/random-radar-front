@@ -56,7 +56,7 @@ const Login = () => {
         const logged = await loginWithGoogle();
         if (logged) {
             console.log(logged);
-            dispatch({ type: ActionTypes.SET_USER, payload: logged.user });
+            dispatch({ type: ActionTypes.SET_USER, payload: logged });
         }
     }
 
